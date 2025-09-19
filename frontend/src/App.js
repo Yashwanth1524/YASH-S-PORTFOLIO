@@ -243,11 +243,11 @@ function App() {
         </div>
       </nav>
 
-      {/* Hero Section (unchanged) */}
+      {/* Hero Section (updated buttons) */}
       <section id="home" className="hero" ref={el => sections.current.home = el}>
         <div className="hero-content">
           <div className="hero-text">
-            <div className="hero-badge">AI/ML Engineer</div>
+            
             <h1 className="hero-title">
               Transforming Ideas into <span className="text-gradient">Intelligent Solutions</span>
             </h1>
@@ -256,17 +256,17 @@ function App() {
               Passionately about deep learning, computer vision, and innovative technology.
             </p>
             <div className="hero-buttons">
-              <button className="btn btn-primary" onClick={() => scrollToSection('projects')}>
+              <button className="btn hero-button" onClick={() => scrollToSection('projects')}>
+                <span className="btn-icon">📁</span>
                 <span>View My Work</span>
-                <div className="liquid-fill"></div>
               </button>
-              <button className="btn btn-primary" onClick={() => scrollToSection('contact')}>
+              <button className="btn hero-button" onClick={() => scrollToSection('contact')}>
+                <span className="btn-icon">📧</span>
                 <span>Get In Touch</span>
-                <div className="liquid-fill"></div>
               </button>
-              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-primary no-underline">
+              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="btn hero-button no-underline">
+                <span className="btn-icon">📄</span>
                 <span>View Resume</span>
-                <div className="liquid-fill"></div>
               </a>
             </div>
             <div className="hero-stats">
@@ -558,7 +558,7 @@ function App() {
             </div>
           </div>
           <div className="footer-bottom">
-            <p>&copy; 2024 Yashwanth R. All rights reserved.</p>
+            <p>&copy; 2025 Yashwanth R. All rights reserved.</p>
           </div>
         </div>
       </footer>
