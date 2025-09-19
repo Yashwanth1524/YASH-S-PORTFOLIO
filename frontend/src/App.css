@@ -1039,7 +1039,7 @@ body {
 /* Contact Section - Updated Styles */
 .contact-grid {
   display: grid;
-  grid-template-columns: 1fr; /* Single column layout for better centering */
+  grid-template-columns: 1fr;
   justify-content: center;
   gap: 2rem;
 }
@@ -1048,7 +1048,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center; /* Center the entire card */
+  align-items: center;
 }
 
 .contact-card {
@@ -1058,7 +1058,7 @@ body {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   width: 100%;
-  max-width: 600px; /* Constrain width for a cleaner look */
+  max-width: 600px;
   text-align: center;
 }
   
@@ -1067,7 +1067,7 @@ body {
   margin-bottom: 1rem;
   font-size: 1.5rem;
 }
-  
+    
 .contact-card p {
   color: var(--text-secondary);
   margin-bottom: 2rem;
@@ -1078,16 +1078,20 @@ body {
   margin-bottom: 2rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start; /* Aligns all items to the start (left) */
+  gap: 1.5rem;
+  width: 100%; /* Make sure the container takes full width to justify content */
 }
   
 .contact-item {
   display: flex;
-  flex-direction: column; /* Change to column to stack label and value */
-  align-items: center; /* Center horizontally within the column */
-  gap: 0.5rem; /* Reduced gap */
-  margin-bottom: 1.5rem;
+  align-items: center; /* Aligns icon and text horizontally */
+  gap: 1rem;
   color: var(--text-primary);
+}
+
+.contact-item > div {
+  text-align: left; /* Ensures text is left-aligned */
 }
   
 /* Contact Icons - New Styling */
