@@ -1,13 +1,11 @@
 [build]
   base = "frontend"
   command = "npm run build"
-  publish = "frontend/build"
+  publish = "build"
 
-# If you have serverless functions in netlify-functions/
 [functions]
   directory = "netlify-functions"
 
-# Redirect API requests to your backend if needed
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
