@@ -25,7 +25,7 @@ app = FastAPI(title="Living Portfolio API", version="1.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*"],  # Replace with your frontend URL in production
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -45,7 +45,7 @@ try:
         device=0 if torch.cuda.is_available() else -1
     )
 except Exception as e:
-    print(f"Error loading models: {e}")
+    print(f"Error loading AI models: {e}")
     sentiment_analyzer = None
     text_generator = None
 
@@ -130,8 +130,8 @@ class ContactForm(BaseModel):
 async def send_email(contact_form: ContactForm):
     try:
         message = Mail(
-            from_email=contact_form.email,      # user email
-            to_emails=TO_EMAIL,                 # your email
+            from_email=contact_form.email,
+            to_emails=TO_EMAIL,
             subject=f"Portfolio Inquiry: {contact_form.subject}",
             plain_text_content=f"""
 Name: {contact_form.name}
@@ -141,7 +141,7 @@ Message: {contact_form.body}
         )
         sg = SendGridAPIClient(SENDGRID_API_KEY)
         response = sg.send(message)
-        if response.status_code >= 200 and response.status_code < 300:
+        if 200 <= response.status_code < 300:
             return {"message": "Email sent successfully via SendGrid!"}
         else:
             raise HTTPException(status_code=500, detail=f"SendGrid error: {response.status_code}")
@@ -158,7 +158,7 @@ async def analyze_sentiment(text: str):
     try:
         result = sentiment_analyzer(text[:512])[0]
         return {"sentiment": result['label'].lower(), "confidence": float(result['score'])}
-    except Exception as e:
+    except Exception:
         return {"sentiment": "neutral", "confidence": 0.0}
 
 # -----------------------
@@ -175,7 +175,7 @@ def generate_ai_message(context: str, temperature: float) -> str:
         prompt = f"Create a creative welcome message for an AI engineer's portfolio website on a {context} day with temperature {temperature}°C:"
         result = text_generator(prompt, max_length=50, num_return_sequences=1, temperature=0.8)
         return result[0]['generated_text'].replace(prompt, "").strip()
-    except Exception as e:
+    except Exception:
         return f"Exploring AI possibilities on this {context} day. Temperature: {temperature}°C"
 
 def get_theme(context: str) -> dict:
