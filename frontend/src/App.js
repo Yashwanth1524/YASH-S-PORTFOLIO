@@ -549,7 +549,7 @@ function App() {
               <span className="logo-icon">{'</>'}</span>
               <span>Yashwanth R</span>
             </div>
-            <p>Building the future with AI and Machine Learning</p>
+            <p>Building the future with Artificial Intelligence and Machine Learning</p>
             <div className="footer-links">
               <a href="#home">Home</a>
               <a href="#about">About</a>
