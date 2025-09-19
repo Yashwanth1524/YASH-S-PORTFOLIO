@@ -268,90 +268,38 @@ body {
   gap: 1rem;
   margin-bottom: 3rem;
   animation: slideInUp 1s ease-out 0.6s both;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* Prevents buttons from wrapping */
 }
 
-.btn {
-  position: relative;
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 50px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: var(--transition);
-  overflow: hidden;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  z-index: 1;
-  color: white;
-  background-color: var(--primary-color);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.btn.btn-primary {
-  background: var(--gradient);
+/* New, consolidated styles for all hero buttons */
+.btn.hero-button {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: var(--text-primary);
   text-decoration: none;
-  /* Resetting gradient fill for the liquid effect */
-  background-size: 100% 100%;
-  transition: background-size 0.5s ease;
+  border-radius: 15px;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-/* Liquid fill animation logic */
-.btn-primary .liquid-fill {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 0;
-  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
-  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: -1;
-  border-radius: 50px;
-}
-
-.btn-primary:hover .liquid-fill {
-  height: 100%;
-}
-
-.btn-primary:hover {
-  color: white;
+/* The hover effect is now exactly the same as the project links */
+.btn.hero-button:hover {
+  background: var(--primary-color);
   transform: translateY(-2px);
-  box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
 }
 
-/* This is the new shimmer animation for the buttons */
-.shimmer {
-    position: relative;
-    overflow: hidden;
-    color: white;
-    background: transparent;
-    border: 2px solid transparent;
-    transition: all 0.5s;
+.btn.no-underline {
+    text-decoration: none;
 }
 
-.shimmer::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 300%;
-    height: 100%;
-    background: var(--gradient);
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-    pointer-events: none;
-    z-index: -1;
+.btn-icon {
+  font-size: 1rem;
+  line-height: 1;
 }
-
-.shimmer:hover::before {
-    left: 0;
-    opacity: 1;
-}
-
 
 .hero-stats {
   display: flex;
@@ -838,25 +786,6 @@ body {
 .skill-category:hover .skills-grid .skill-item-no-progress {
   opacity: 1;
   transform: translateY(0);
-}
-
-.skill-category:hover .skills-grid .skill-item-no-progress:nth-child(1) {
-  transition-delay: 0.1s;
-}
-.skill-category:hover .skills-grid .skill-item-no-progress:nth-child(2) {
-  transition-delay: 0.2s;
-}
-.skill-category:hover .skills-grid .skill-item-no-progress:nth-child(3) {
-  transition-delay: 0.3s;
-}
-.skill-category:hover .skills-grid .skill-item-no-progress:nth-child(4) {
-  transition-delay: 0.4s;
-}
-.skill-category:hover .skills-grid .skill-item-no-progress:nth-child(5) {
-  transition-delay: 0.5s;
-}
-.skill-category:hover .skills-grid .skill-item-no-progress:nth-child(6) {
-  transition-delay: 0.6s;
 }
 
 .skill-item-no-progress:hover {
@@ -1382,13 +1311,6 @@ body {
   .timeline::before {
     left: 20px;
     transform: none;
-  }
-
-  .timeline-item {
-    width: 100%;
-    left: 0 !important;
-    padding-left: 50px;
-    padding-right: 0;
   }
 
   .timeline-item:nth-child(even) {
