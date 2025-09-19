@@ -122,7 +122,7 @@ function App() {
       description: "An API using FastAPI and OpenCV to clean and enhance noisy or damaged musical sheet images for improved recognition.",
       technologies: ["Python", "FastAPI", "OpenCV"],
       github: "https://github.com/Yashwanth1524/OMR",
-      live: "http://127.0.0.1:8000/denoise-demo/"
+      live: "https://huggingface.co/spaces/racecourse/Denoising"
     },
     {
       id: 3,
