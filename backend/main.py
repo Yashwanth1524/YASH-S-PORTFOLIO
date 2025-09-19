@@ -1,33 +1,30 @@
 import os
 import cv2
 import numpy as np
-from fastapi import FastAPI, UploadFile, File, HTTPException
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi import FastAPI, HTTPException
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import requests
 from datetime import datetime
-import pytz
 from transformers import pipeline
 import torch
 from pydantic import BaseModel
-from typing import Union
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 # -----------------------
-# Configuration for email
+# Email configuration
 # -----------------------
 EMAIL_ADDRESS = "yashwanth150204@gmail.com"
-EMAIL_PASSWORD = "kosd upbz ptym wqgy"  # Use Gmail App Password
+EMAIL_PASSWORD = "kosd upbz ptym wqgy"  # your Gmail App Password
 
 # -----------------------
-# Initialize FastAPI app
+# Initialize FastAPI
 # -----------------------
 app = FastAPI(title="Living Portfolio API", version="1.0")
 
-# CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -36,29 +33,40 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize AI pipelines
+# -----------------------
+# AI pipelines
+# -----------------------
 try:
-    sentiment_analyzer = pipeline("sentiment-analysis", model="distilbert-base-uncased-finetuned-sst-2-english")
-    text_generator = pipeline("text-generation", model="gpt2", device=0 if torch.cuda.is_available() else -1)
+    sentiment_analyzer = pipeline(
+        "sentiment-analysis", 
+        model="distilbert-base-uncased-finetuned-sst-2-english"
+    )
+    text_generator = pipeline(
+        "text-generation", 
+        model="gpt2", 
+        device=0 if torch.cuda.is_available() else -1
+    )
 except Exception as e:
     print(f"Error loading models: {e}")
     sentiment_analyzer = None
     text_generator = None
 
-# Mount static files
+# -----------------------
+# Static files
+# -----------------------
 os.makedirs("static/cleaned_images", exist_ok=True)
 os.makedirs("static/uploaded_images", exist_ok=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # -----------------------
-# Redirect to HuggingFace space
+# Redirect to HuggingFace
 # -----------------------
 @app.get("/denoise-demo/")
 async def redirect_to_hf_space():
     return RedirectResponse("https://huggingface.co/spaces/racecourse/Denoising")
 
 # -----------------------
-# Root
+# Root endpoint
 # -----------------------
 @app.get("/")
 async def root():
@@ -123,10 +131,10 @@ class ContactForm(BaseModel):
 @app.post("/send-email/")
 async def send_email(contact_form: ContactForm):
     try:
-        # Compose the email
+        # Compose email
         msg = MIMEMultipart()
         msg['From'] = EMAIL_ADDRESS
-        msg['To'] = EMAIL_ADDRESS  # sending to yourself
+        msg['To'] = EMAIL_ADDRESS
         msg['Subject'] = f"Portfolio Inquiry: {contact_form.subject}"
 
         body = f"""
@@ -136,7 +144,7 @@ async def send_email(contact_form: ContactForm):
         """
         msg.attach(MIMEText(body, 'plain'))
 
-        # Connect to Gmail SMTP server
+        # Send via Gmail SMTP
         server = smtplib.SMTP('smtp.gmail.com', 587)
         server.starttls()
         server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
@@ -234,7 +242,7 @@ async def get_context(location: LocationData):
         raise HTTPException(status_code=500, detail=f"Error processing context: {str(e)}")
 
 # -----------------------
-# Run Uvicorn
+# Run app
 # -----------------------
 if __name__ == "__main__":
     import uvicorn
