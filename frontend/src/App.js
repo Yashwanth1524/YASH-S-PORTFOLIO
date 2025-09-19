@@ -150,7 +150,7 @@ function App() {
       institution: "Coimbatore Institute of Technology",
       degree: "M.Sc. Artificial Intelligence and Machine Learning",
       period: "2021 - 2026",
-      details: "CGPA: 7.89"
+      details: "" // Removed CGPA details
     }
   ];
 
@@ -258,15 +258,15 @@ function App() {
             <div className="hero-buttons">
               <button className="btn btn-primary" onClick={() => scrollToSection('projects')}>
                 <span>View My Work</span>
-                <div className="btn-hover-effect"></div>
+                <div className="liquid-fill"></div>
               </button>
               <button className="btn btn-primary" onClick={() => scrollToSection('contact')}>
                 <span>Get In Touch</span>
-                <div className="btn-hover-effect"></div>
+                <div className="liquid-fill"></div>
               </button>
               <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="btn btn-primary no-underline">
                 <span>View Resume</span>
-                <div className="btn-hover-effect"></div>
+                <div className="liquid-fill"></div>
               </a>
             </div>
             <div className="hero-stats">
@@ -356,7 +356,7 @@ function App() {
         </div>
       </section>
       
-      {/* Projects Section (unchanged) */}
+      {/* Projects Section (updated to include glow effect) */}
       <section id="projects" className="section" ref={el => sections.current.projects = el}>
         <div className="container">
           <div className="section-header">
@@ -374,7 +374,7 @@ function App() {
                       <span>GitHub</span>
                     </a>
                     {project.live && (
-                      <a href={project.live} target="_blank" rel="noopener noreferrer" className="project-link">
+                      <a href={project.live} target="_blank" rel="noopener noreferrer" className="project-link live-demo-glow">
                         <span className="project-link-icon">🌐</span>
                         <span>Live Demo</span>
                       </a>
@@ -453,7 +453,7 @@ function App() {
         </div>
       </section>
 
-      {/* Education Section (unchanged) */}
+      {/* Education Section (updated) */}
       <section id="education" className="section" ref={el => sections.current.education = el}>
         <div className="container">
           <div className="section-header">
@@ -462,13 +462,12 @@ function App() {
           </div>
           <div className="education-grid">
             {education.map((edu, index) => (
-              <div key={index} className="education-card">
+              <a href="https://www.cit.edu.in/" key={index} target="_blank" rel="noopener noreferrer" className="education-card">
                 <div className="education-icon">🎓</div>
                 <h3>{edu.degree}</h3>
                 <h4>{edu.institution}</h4>
                 <span className="education-period">{edu.period}</span>
-                <p>{edu.details}</p>
-              </div>
+              </a>
             ))}
           </div>
         </div>
@@ -494,7 +493,7 @@ function App() {
         </div>
       </section>
 
-      {/* Contact Section (updated) */}
+      {/* Contact Section (unchanged) */}
       <section id="contact" className="section" ref={el => sections.current.contact = el}>
         <div className="container">
           <div className="section-header">
