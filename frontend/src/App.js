@@ -64,35 +64,6 @@ function App() {
     setIsMenuOpen(false);
   };
 
-  // UPDATED: handle form submission
-  const handleFormSubmit = async (event) => {
-    event.preventDefault();
-
-    const formData = new FormData(event.target);
-    const data = Object.fromEntries(formData.entries());
-
-    try {
-        // Change the URL to a relative path. The proxy will handle the rest.
-        const response = await fetch('/send-email/', { 
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
-
-        if (response.ok) {
-            alert('Message sent successfully! I will get back to you soon.');
-            event.target.reset();
-        } else {
-            alert('Failed to send message. Please try again.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again later.');
-    }
-};
-
   // Sample data (unchanged)
   const profileData = {
     name: "Yashwanth R",
@@ -528,13 +499,13 @@ function App() {
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">Get In Touch</h2>
-            <p className="section-subtitle">Let's work together</p>
+            <p className="section-subtitle">Let's connect</p>
           </div>
           <div className="contact-grid">
             <div className="contact-info">
               <div className="contact-card">
-                <h3>Ready to start your project?</h3>
-                <p>I'm available for freelance work and new opportunities. Let's discuss how I can help bring your ideas to life.</p>
+                <h3>Let's collaborate on an innovative project!</h3>
+                <p>I'm always open to discussing new ideas, opportunities, and challenges. Feel free to reach out via email or connect with me on social media.</p>
                 <div className="contact-details">
                   <div className="contact-item">
                     <div className="contact-icon">📧</div>
@@ -566,28 +537,6 @@ function App() {
                   ))}
                 </div>
               </div>
-            </div>
-            <div className="contact-form-container">
-              <h3>Send me a message</h3>
-              {/* UPDATED form element */}
-              <form className="contact-form" onSubmit={handleFormSubmit}>
-                <div className="form-group">
-                  <input type="text" name="name" placeholder="Your Name" required />
-                </div>
-                <div className="form-group">
-                  <input type="email" name="email" placeholder="Your Email" required />
-                </div>
-                <div className="form-group">
-                  <input type="text" name="subject" placeholder="Subject" required />
-                </div>
-                <div className="form-group">
-                  <textarea name="body" placeholder="Your Message" rows="5" required></textarea>
-                </div>
-                <button type="submit" className="btn btn-primary">
-                  <span>Send Message</span>
-                  <div className="btn-hover-effect"></div>
-                </button>
-              </form>
             </div>
           </div>
         </div>
