@@ -283,38 +283,75 @@ body {
   overflow: hidden;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-}
-
-/* All buttons now use this primary style */
-.btn-primary {
-  background: var(--gradient);
-  color: white;
-  text-decoration: none;
-  /* Add these three lines to center the content */
-  display: flex;
   justify-content: center;
-  align-items: center;
+  gap: 0.5rem;
+  z-index: 1;
+  color: white;
+  background-color: var(--primary-color);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-.btn-hover-effect {
+.btn.btn-primary {
+  background: var(--gradient);
+  text-decoration: none;
+  /* Resetting gradient fill for the liquid effect */
+  background-size: 100% 100%;
+  transition: background-size 0.5s ease;
+}
+
+/* Liquid fill animation logic */
+.btn-primary .liquid-fill {
+  content: '';
   position: absolute;
-  top: 0;
-  left: -100%;
+  bottom: 0;
+  left: 0;
   width: 100%;
+  height: 0;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--accent-color));
+  transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
+  border-radius: 50px;
+}
+
+.btn-primary:hover .liquid-fill {
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: var(--transition);
 }
 
-.btn:hover .btn-hover-effect {
-  left: 100%;
-}
-
-.btn:hover {
+.btn-primary:hover {
+  color: white;
   transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
 }
+
+/* This is the new shimmer animation for the buttons */
+.shimmer {
+    position: relative;
+    overflow: hidden;
+    color: white;
+    background: transparent;
+    border: 2px solid transparent;
+    transition: all 0.5s;
+}
+
+.shimmer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 300%;
+    height: 100%;
+    background: var(--gradient);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.shimmer:hover::before {
+    left: 0;
+    opacity: 1;
+}
+
 
 .hero-stats {
   display: flex;
@@ -671,6 +708,23 @@ body {
   border: 1px solid rgba(99, 102, 241, 0.3);
 }
 
+/* This is the new animation for the live demo button */
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 0 0px var(--primary-color);
+  }
+  50% {
+    box-shadow: 0 0 10px 5px rgba(99, 102, 241, 0.5), 0 0 20px 10px rgba(139, 92, 246, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 0 0px var(--primary-color);
+  }
+}
+
+.live-demo-glow {
+  animation: pulse-glow 2.5s infinite ease-in-out;
+}
+
 .project-hover-effect {
   position: absolute;
   top: 0;
@@ -947,6 +1001,11 @@ body {
   text-align: center;
   position: relative;
   overflow: hidden;
+  text-decoration: none; /* Remove underline from card link */
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .education-card::before {
