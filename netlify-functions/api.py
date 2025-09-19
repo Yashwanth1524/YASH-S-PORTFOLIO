@@ -1,25 +1,25 @@
 # netlify-functions/api.py
 import os
-import sys
-from pathlib import Path
-from fastapi import FastAPI, HTTPException
+import cv2
+import numpy as np
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
 import requests
 from datetime import datetime
+import pytz
+from transformers import pipeline
+import torch
+from pydantic import BaseModel
+from typing import Union
 import csv
+from mangum import Mangum   # 👈 NEW for Netlify Functions
 
-# Add the root directory to the Python path
-sys.path.insert(0, str(Path(__file__).parent.parent))
+# Initialize FastAPI app
+app = FastAPI(title="Living Portfolio API", version="1.0")
 
-# Import your FastAPI app from the main file
-from main import app  # Assuming your main file is named main.py
+# (Keep all your routes, functions, and logic exactly the same...)
 
-# A simple handler for Netlify's serverless function
-def handler(event, context):
-    uvicorn.run(app, host="0.0.0.0", port=8000)
-    return {
-        'statusCode': 200,
-        'body': 'Function is running'
-    }
+# 🔑 At the very bottom, instead of uvicorn.run:
+handler = Mangum(app)
