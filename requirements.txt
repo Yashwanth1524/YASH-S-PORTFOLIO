@@ -5,3 +5,7 @@ pydantic
 opencv-python
 numpy
 pytz
+torch
+transformers
+sendgrid
+python-multipart
