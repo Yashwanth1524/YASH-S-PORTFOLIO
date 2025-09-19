@@ -12,12 +12,22 @@ from transformers import pipeline
 import torch
 from pydantic import BaseModel
 from typing import Union
-import csv
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
+# -----------------------
+# Configuration for email
+# -----------------------
+EMAIL_ADDRESS = "yashwanth150204@gmail.com"
+EMAIL_PASSWORD = "kosd upbz ptym wqgy"  # Use Gmail App Password
+
+# -----------------------
 # Initialize FastAPI app
+# -----------------------
 app = FastAPI(title="Living Portfolio API", version="1.0")
 
-# CORS middleware for development
+# CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -35,13 +45,13 @@ except Exception as e:
     sentiment_analyzer = None
     text_generator = None
 
-# Define paths for images and mount static files
+# Mount static files
 os.makedirs("static/cleaned_images", exist_ok=True)
 os.makedirs("static/uploaded_images", exist_ok=True)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # -----------------------
-# Denoising redirect
+# Redirect to HuggingFace space
 # -----------------------
 @app.get("/denoise-demo/")
 async def redirect_to_hf_space():
@@ -102,7 +112,7 @@ async def get_projects():
     return projects_data
 
 # -----------------------
-# Contact form
+# Contact form (send email)
 # -----------------------
 class ContactForm(BaseModel):
     name: str
@@ -113,27 +123,29 @@ class ContactForm(BaseModel):
 @app.post("/send-email/")
 async def send_email(contact_form: ContactForm):
     try:
-        submissions_dir = "contact_submissions"
-        os.makedirs(submissions_dir, exist_ok=True)
-        csv_file_path = os.path.join(submissions_dir, "contact_submissions.csv")
-        file_exists = os.path.exists(csv_file_path)
+        # Compose the email
+        msg = MIMEMultipart()
+        msg['From'] = EMAIL_ADDRESS
+        msg['To'] = EMAIL_ADDRESS  # sending to yourself
+        msg['Subject'] = f"Portfolio Inquiry: {contact_form.subject}"
 
-        with open(csv_file_path, "a", newline="", encoding="utf-8") as file:
-            fieldnames = ["timestamp", "name", "email", "subject", "message"]
-            writer = csv.DictWriter(file, fieldnames=fieldnames)
-            if not file_exists:
-                writer.writeheader()
-            data_row = {
-                "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                "name": contact_form.name,
-                "email": contact_form.email,
-                "subject": contact_form.subject,
-                "message": contact_form.body
-            }
-            writer.writerow(data_row)
-        return {"message": "Message saved successfully!"}
+        body = f"""
+        Name: {contact_form.name}
+        Email: {contact_form.email}
+        Message: {contact_form.body}
+        """
+        msg.attach(MIMEText(body, 'plain'))
+
+        # Connect to Gmail SMTP server
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+        server.send_message(msg)
+        server.quit()
+
+        return {"message": "Email sent successfully!"}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error saving message: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
 
 # -----------------------
 # Sentiment Analysis
