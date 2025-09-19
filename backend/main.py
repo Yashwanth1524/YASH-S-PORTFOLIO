@@ -6,19 +6,17 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 import requests
-from datetime import datetime
 from transformers import pipeline
 import torch
 from pydantic import BaseModel
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 # -----------------------
 # Email configuration
 # -----------------------
-EMAIL_ADDRESS = "yashwanth150204@gmail.com"
-EMAIL_PASSWORD = "kosd upbz ptym wqgy"  # your Gmail App Password
+SENDGRID_API_KEY = "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"
+TO_EMAIL = "yashwanth150204@gmail.com"  # your email
 
 # -----------------------
 # Initialize FastAPI
@@ -120,7 +118,7 @@ async def get_projects():
     return projects_data
 
 # -----------------------
-# Contact form (send email)
+# Contact form (SendGrid)
 # -----------------------
 class ContactForm(BaseModel):
     name: str
@@ -131,27 +129,22 @@ class ContactForm(BaseModel):
 @app.post("/send-email/")
 async def send_email(contact_form: ContactForm):
     try:
-        # Compose email
-        msg = MIMEMultipart()
-        msg['From'] = EMAIL_ADDRESS
-        msg['To'] = EMAIL_ADDRESS
-        msg['Subject'] = f"Portfolio Inquiry: {contact_form.subject}"
-
-        body = f"""
-        Name: {contact_form.name}
-        Email: {contact_form.email}
-        Message: {contact_form.body}
-        """
-        msg.attach(MIMEText(body, 'plain'))
-
-        # Send via Gmail SMTP
-        server = smtplib.SMTP('smtp.gmail.com', 587)
-        server.starttls()
-        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
-        server.send_message(msg)
-        server.quit()
-
-        return {"message": "Email sent successfully!"}
+        message = Mail(
+            from_email=contact_form.email,      # user email
+            to_emails=TO_EMAIL,                 # your email
+            subject=f"Portfolio Inquiry: {contact_form.subject}",
+            plain_text_content=f"""
+Name: {contact_form.name}
+Email: {contact_form.email}
+Message: {contact_form.body}
+            """
+        )
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        response = sg.send(message)
+        if response.status_code >= 200 and response.status_code < 300:
+            return {"message": "Email sent successfully via SendGrid!"}
+        else:
+            raise HTTPException(status_code=500, detail=f"SendGrid error: {response.status_code}")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Failed to send email: {str(e)}")
 
