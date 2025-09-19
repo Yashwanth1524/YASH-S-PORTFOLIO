@@ -1,27 +1,14 @@
 [build]
-  command = "npm run build"  # This builds your React app
-  publish = "build"          # The output directory for your React app
+  base = "frontend"
+  command = "npm run build"
+  publish = "frontend/build"
 
+# If you have serverless functions in netlify-functions/
 [functions]
-  node_bundler = "esbuild"
-  directory = "netlify-functions"  # Your Python serverless functions will live here
+  directory = "netlify-functions"
 
+# Redirect API requests to your backend if needed
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/main"
-  status = 200
-
-[[redirects]]
-  from = "/denoise-demo/"
-  to = "/.netlify/functions/main/denoise-demo/"
-  status = 200
-
-[[redirects]]
-  from = "/static/uploaded_images/*"
-  to = "/.netlify/functions/main/static/uploaded_images/:splat"
-  status = 200
-
-[[redirects]]
-  from = "/static/cleaned_images/*"
-  to = "/.netlify/functions/main/static/cleaned_images/:splat"
+  to = "/.netlify/functions/:splat"
   status = 200
