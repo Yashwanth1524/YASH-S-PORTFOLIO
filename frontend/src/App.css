@@ -131,12 +131,13 @@ body {
   color: var(--text-secondary);
   cursor: pointer;
   transition: var(--transition);
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 1rem; /* Reverted padding to original size */
   border-radius: 20px;
   font-weight: 500;
   position: relative;
   overflow: hidden;
   text-decoration: none;
+  font-size: 1rem; /* Reverted font size to original size */
 }
 
 .nav-link::before {
@@ -1203,9 +1204,8 @@ body {
   
 .footer-links {
   display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-bottom: 2rem;
+  justify-content: center; /* Center the social links */
+  gap: 1rem;
 }
   
 .footer-links a {
