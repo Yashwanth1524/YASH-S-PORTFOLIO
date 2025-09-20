@@ -1,3 +1,4 @@
+// App.js
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
@@ -217,7 +218,7 @@ function App() {
         <div className="binary-rain"></div>
       </div>
 
-      {/* Navigation (unchanged) */}
+      {/* Navigation (logo fixed) */}
       <nav className="navbar">
         <div className="nav-container">
           <div className="nav-logo">
